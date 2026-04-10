@@ -51,6 +51,26 @@ export default function FinalCTA() {
         />
       </div>
 
+      {/*
+        Large watermark brand name — positioned absolutely behind all content.
+        Very low opacity (0.04) so it reads as texture, not text. The enormous
+        font size (20rem+) fills the full section width, anchoring the brand
+        identity at the emotional close of the page without competing with the CTA.
+        `select-none pointer-events-none` keeps it invisible to assistive tech and
+        prevents accidental text selection.
+      */}
+      <div
+        className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden"
+        aria-hidden="true"
+      >
+        <span
+          className="font-heading font-bold text-white opacity-[0.04] whitespace-nowrap leading-none"
+          style={{ fontSize: "clamp(6rem, 20vw, 18rem)" }}
+        >
+          FlowPilot
+        </span>
+      </div>
+
       <div className="relative max-w-3xl mx-auto px-4 sm:px-6 text-center">
         {/* Single motion wrapper — all content fades up together as a unit */}
         <motion.div

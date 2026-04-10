@@ -9,42 +9,31 @@ import { useAnimationVariants } from "@/hooks/useAnimationVariants";
 
 interface Feature {
   icon: LucideIcon;
-  // Tailwind class for the icon color and the detail line text color.
-  // Includes a dark: variant because accent colors need to be one step
-  // lighter in dark mode to maintain WCAG AA contrast (e.g. violet-600 → violet-400).
+  number: string;      // decorative background number: "01", "02", "03"
   color: string;
-  // Icon container background (tint of the same accent color family).
   bg: string;
-  // Card border — default state.
   border: string;
-  // Card border — hover state. Kept separate so each card can have its own hue.
   hoverBorder: string;
   title: string;
   description: string;
-  // Short reinforcing tagline displayed at the bottom of each card in accent color.
   detail: string;
 }
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 
 /*
- * Each feature maps to one of FlowPilot's three core pillars:
- *   1. Capture (violet)  — ideas, notes, voice memos
- *   2. Execute (teal)    — tasks, assignments, priorities
- *   3. Decide (orange)   — decisions, history, accountability
- *
- * Dark mode strategy for accent classes:
- *   - `color`: 600 → 400 (lighter = more readable on dark bg)
- *   - `bg`: -50 → -900/30 (dark semi-transparent tint instead of pastel)
- *   - `border` / `hoverBorder`: -100/-200 → -800/-700 (visible on slate-900 card)
+ * Each feature has a `number` field ("01"/"02"/"03") that renders as a large
+ * decorative background element inside the card. This breaks the "icon-card
+ * template" pattern — cards feel designed, not generated.
  */
 const FEATURES: Feature[] = [
   {
     icon: Lightbulb,
+    number: "01",
     color: "text-violet-600 dark:text-violet-400",
     bg: "bg-violet-50 dark:bg-violet-900/30",
     border: "border-violet-100 dark:border-violet-800",
-    hoverBorder: "hover:border-violet-200 dark:hover:border-violet-700",
+    hoverBorder: "hover:border-violet-300 dark:hover:border-violet-700",
     title: "Captura ideas al vuelo",
     description:
       "Un espacio compartido donde nada se pierde. El equipo aporta en tiempo real, sin threads interminables ni juntas innecesarias.",
@@ -52,10 +41,11 @@ const FEATURES: Feature[] = [
   },
   {
     icon: CheckSquare,
+    number: "02",
     color: "text-teal-600 dark:text-teal-400",
     bg: "bg-teal-50 dark:bg-teal-900/30",
     border: "border-teal-100 dark:border-teal-800",
-    hoverBorder: "hover:border-teal-200 dark:hover:border-teal-700",
+    hoverBorder: "hover:border-teal-300 dark:hover:border-teal-700",
     title: "Convierte ideas en tareas",
     description:
       "De la conversación a la acción en un clic. Asigna, prioriza y da seguimiento sin cambiar de herramienta ni perder el hilo.",
@@ -63,10 +53,11 @@ const FEATURES: Feature[] = [
   },
   {
     icon: BookOpen,
+    number: "03",
     color: "text-orange-600 dark:text-orange-400",
     bg: "bg-orange-50 dark:bg-orange-900/30",
     border: "border-orange-100 dark:border-orange-800",
-    hoverBorder: "hover:border-orange-200 dark:hover:border-orange-700",
+    hoverBorder: "hover:border-orange-300 dark:hover:border-orange-700",
     title: "Toma decisiones con contexto",
     description:
       "FlowPilot registra el porqué de cada decisión. Siempre sabes qué se decidió, quién lo decidió y por qué se llegó ahí.",
@@ -79,34 +70,39 @@ const FEATURES: Feature[] = [
 /**
  * Features
  *
- * Three-pillar section that explains what FlowPilot does.
+ * Bento asymmetric grid — breaks the "three identical cards" template pattern:
  *
- * Layout:
- *   Mobile:  1 column → each card full-width, generous padding (p-6)
- *   md:      2 columns
- *   lg:      3 columns, larger padding (p-8)
+ *   Mobile (1 col):
+ *     Card 1 | Card 2 | Card 3  (stacked)
  *
- * Animation:
- *   Cards stagger in with a 120ms delay between each (defined in
- *   `staggerContainer` / `staggerItem` inside useAnimationVariants).
- *   `margin: "-60px"` on the viewport means the animation fires 60px
- *   before the section enters the viewport — feels more natural.
+ *   md (2 col):
+ *     [ Card 1 — full width, horizontal layout ]
+ *     [ Card 2 ] [ Card 3 ]
  *
- * Dark mode:
- *   Section bg: white → slate-950
- *   Card bg:    white → slate-900 (one step lighter than section = subtle depth)
- *   Box shadow: default slate → slate-900/50 (softer on dark backgrounds)
+ *   lg (3 col):
+ *     [ Card 1 — 2 cols wide, horizontal ] [ Card 2 — 1 col ]
+ *     [ Card 3 — full width 3 cols, horizontal ]
+ *
+ * Cards 1 and 3 use a horizontal layout (icon + content side-by-side) on md+.
+ * Each card has a large decorative background number (01/02/03) that reinforces
+ * the non-generic feel.
+ *
+ * The section gets a subtle dot-grid background to visually differentiate it
+ * from the white sections before and after.
  */
 export default function Features() {
   const { staggerContainer } = useAnimationVariants();
 
   return (
-    <section id="caracteristicas" className="py-16 sm:py-24 bg-white dark:bg-slate-950">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+    <section id="caracteristicas" className="py-16 sm:py-24 bg-white dark:bg-slate-950 relative overflow-hidden">
 
-        {/* Section header — left-aligned, max-width keeps it readable */}
+      {/* Dot grid — adds texture that distinguishes this section from adjacent white sections */}
+      <div className="absolute inset-0 bg-dot-pattern opacity-40 dark:opacity-[0.07] pointer-events-none" aria-hidden="true" />
+
+      <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
+
+        {/* Section header */}
         <div className="max-w-2xl mb-10 sm:mb-16">
-          {/* Eyebrow label — uppercase + wide tracking = section tag convention */}
           <span className="text-teal-600 dark:text-teal-400 text-xs sm:text-sm font-semibold uppercase tracking-widest">
             Características
           </span>
@@ -119,18 +115,27 @@ export default function Features() {
           </p>
         </div>
 
-        {/* Staggered card grid */}
+        {/*
+          Bento grid:
+          - Row 1 on lg: card[0] (col-span-2 wide) + card[1] (col-span-1)
+          - Row 2 on lg: card[2] (col-span-3 full width)
+          - On md: card[0] full-width, card[1]+card[2] side by side
+        */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5"
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          // margin "-60px" = start animation 60px before section scrolls into view
           viewport={{ once: true, margin: "-60px" }}
         >
-          {FEATURES.map((feature) => (
-            <FeatureCard key={feature.title} feature={feature} />
-          ))}
+          {/* Card 0 — wide on lg (2 cols), full-width on md, horizontal layout on md+ */}
+          <FeatureCard feature={FEATURES[0]} spanClass="md:col-span-2 lg:col-span-2" horizontal />
+
+          {/* Card 1 — standard single column */}
+          <FeatureCard feature={FEATURES[1]} spanClass="md:col-span-1 lg:col-span-1" />
+
+          {/* Card 2 — full width on all breakpoints, horizontal layout on md+ */}
+          <FeatureCard feature={FEATURES[2]} spanClass="md:col-span-2 lg:col-span-3" horizontal />
         </motion.div>
       </div>
     </section>
@@ -142,45 +147,68 @@ export default function Features() {
 /**
  * FeatureCard
  *
- * Individual feature card with:
- *   - Accent-colored icon container (tinted bg + icon)
- *   - Title, description, and a short tagline in accent color
- *   - Hover: slight upward lift (-translate-y-1) + shadow
+ * @param spanClass  Tailwind col-span classes injected from the parent grid
+ * @param horizontal When true, icon and content sit side-by-side on md+ screens.
+ *                   Used for the wide/full-width cards in the bento grid.
  *
- * `useAnimationVariants` is called here (not in the parent) so each card
- * gets its own `staggerItem` variant reference — required for Framer Motion
- * stagger to work correctly when variants are defined per-instance.
+ * Decorative number (e.g. "01"):
+ *   Positioned absolutely at the bottom-right of the card, very low opacity so it
+ *   reads as texture rather than content. Provides visual anchoring and makes each
+ *   card feel individually designed.
  */
-function FeatureCard({ feature }: { feature: Feature }) {
+function FeatureCard({
+  feature,
+  spanClass = "",
+  horizontal = false,
+}: {
+  feature: Feature;
+  spanClass?: string;
+  horizontal?: boolean;
+}) {
   const { staggerItem } = useAnimationVariants();
   const Icon = feature.icon;
 
   return (
     <motion.article
       variants={staggerItem}
-      className={`group relative rounded-2xl border ${feature.border} ${feature.hoverBorder} p-6 lg:p-8 hover:shadow-lg dark:hover:shadow-slate-900/50 transition-all duration-300 hover:-translate-y-1 bg-white dark:bg-slate-900`}
+      className={`group relative rounded-2xl border ${feature.border} ${feature.hoverBorder} ${spanClass} bg-white dark:bg-slate-900 overflow-hidden hover:shadow-xl dark:hover:shadow-slate-900/60 transition-all duration-300 hover:-translate-y-0.5`}
     >
-      {/* Icon container — tinted circle, matches the feature's color family */}
-      <div
-        className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl ${feature.bg} flex items-center justify-center mb-5 sm:mb-6`}
+      {/*
+        Decorative background number — absolute, bottom-right, low opacity.
+        Uses the card's accent color at near-zero opacity so it harmonizes
+        with the card's color family without competing with the content.
+      */}
+      <span
+        className={`absolute -bottom-4 -right-2 text-[8rem] font-heading font-bold leading-none select-none pointer-events-none ${feature.color} opacity-[0.06] dark:opacity-[0.08] tabular-nums`}
         aria-hidden="true"
       >
-        <Icon size={20} className={feature.color} />
+        {feature.number}
+      </span>
+
+      {/* Card content — horizontal on md+ for wide cards, vertical otherwise */}
+      <div className={`relative p-6 lg:p-8 h-full ${horizontal ? "md:flex md:items-start md:gap-8" : "flex flex-col"}`}>
+
+        {/* Icon container */}
+        <div
+          className={`w-12 h-12 rounded-xl ${feature.bg} flex items-center justify-center shrink-0 ${horizontal ? "mb-5 md:mb-0" : "mb-5"}`}
+          aria-hidden="true"
+        >
+          <Icon size={22} className={feature.color} />
+        </div>
+
+        {/* Text content */}
+        <div className="flex-1">
+          <h3 className="font-heading font-bold text-slate-900 dark:text-white text-fluid-h3 mb-2.5">
+            {feature.title}
+          </h3>
+          <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-4">
+            {feature.description}
+          </p>
+          <p className={`text-xs font-semibold ${feature.color}`}>
+            {feature.detail}
+          </p>
+        </div>
       </div>
-
-      {/* text-fluid-h3 = clamp(18px, 1vw+0.75rem, 22px) */}
-      <h3 className="font-heading font-bold text-slate-900 dark:text-white text-fluid-h3 mb-2.5">
-        {feature.title}
-      </h3>
-
-      <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-4">
-        {feature.description}
-      </p>
-
-      {/* Short reinforcing tagline — accent color + small text draws the eye last */}
-      <p className={`text-xs font-semibold ${feature.color}`}>
-        {feature.detail}
-      </p>
     </motion.article>
   );
 }

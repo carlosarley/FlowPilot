@@ -13,7 +13,6 @@ interface Stat { value: string; label: string }
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 
-// Five fictional beta companies — initials + brand color for the logo chip.
 const LOGOS: Logo[] = [
   { name: "Acme Corp",     initial: "AC", color: "bg-slate-700" },
   { name: "Vertex Labs",   initial: "VL", color: "bg-blue-600" },
@@ -22,11 +21,6 @@ const LOGOS: Logo[] = [
   { name: "Meridian",      initial: "ME", color: "bg-orange-600" },
 ];
 
-/*
- * Testimonials — each includes a specific, measurable outcome to make the
- * quote credible. Generic praise ("great tool!") is avoided intentionally.
- * Avatar letter + color matches the person's name initial and company color.
- */
 const TESTIMONIALS: Testimonial[] = [
   {
     quote: "Por fin un lugar donde las ideas no se pierden en Slack. Las reuniones de alineación bajaron de 5 a 2 por semana — y las decisiones llegan antes de que el momento pase.",
@@ -51,12 +45,6 @@ const TESTIMONIALS: Testimonial[] = [
   },
 ];
 
-/*
- * Three social-proof metrics.
- * "tabular-nums" is applied on the value div to keep digit characters
- * equal-width — prevents slight horizontal shifts when numbers are
- * rendered at large display sizes.
- */
 const STATS: Stat[] = [
   { value: "2,400+", label: "equipos en lista" },
   { value: "18",     label: "países" },
@@ -68,22 +56,18 @@ const STATS: Stat[] = [
 /**
  * SocialProof
  *
- * Three-part section:
- *   1. Logo strip  — "Trusted by" brand logos with stagger entrance
- *   2. Stats grid  — three key numbers with staggered fade-up
- *   3. Testimonials — three quote cards with stagger entrance
+ * Design changes vs. the "template" version:
  *
- * Stats grid responsive note:
- *   On 375px mobile, three columns with "2,400+" and two-line labels look
- *   broken. Single column gives each stat room to breathe. sm+ switches to
- *   three columns where there's enough space.
+ * Stats:
+ *   Removed the teal-50 bordered boxes — those are a dead giveaway of SaaS
+ *   template kits. Replaced with an editorial/magazine-style horizontal strip:
+ *   three large numbers separated by thin vertical lines, no background.
+ *   Much more intentional and typographically bold.
  *
- * Dark mode:
- *   Section bg:     white     → slate-950
- *   Logo chips:     slate-50  → slate-900 bg, slate-100 → slate-800 border
- *   Stats tiles:    teal-50   → teal-900/20, teal-100 border → teal-800
- *   Stat value:     teal-700  → teal-400
- *   Quote cards:    white     → slate-900 bg, slate-100 → slate-800 border
+ * Testimonials:
+ *   Added a large opening quotation mark (") as a decorative element per card —
+ *   gives the cards a magazine/editorial quality. The first card is slightly
+ *   taller via `md:row-span-2` to break the uniform grid pattern.
  */
 export default function SocialProof() {
   const { staggerContainer } = useAnimationVariants();
@@ -93,14 +77,12 @@ export default function SocialProof() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
 
         {/* ── Company logos ─────────────────────────────────────────── */}
-        <div className="text-center mb-12 sm:mb-16">
-          {/* Section tag — uppercase, muted, very wide tracking */}
+        <div className="text-center mb-14 sm:mb-20">
           <p className="text-slate-400 dark:text-slate-500 text-xs sm:text-sm font-medium uppercase tracking-widest mb-6 sm:mb-8">
             Equipos que ya confiaron en FlowPilot durante la beta
           </p>
-          {/* Logo chips animate in with stagger — staggerContainer defines the delay */}
           <motion.div
-            className="flex flex-wrap items-center justify-center gap-3 sm:gap-6"
+            className="flex flex-wrap items-center justify-center gap-3 sm:gap-4"
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
@@ -112,31 +94,30 @@ export default function SocialProof() {
           </motion.div>
         </div>
 
-        {/* ── Stats grid ────────────────────────────────────────────── */}
+        {/* ── Stats — editorial horizontal strip ────────────────────── */}
         {/*
-          Mobile: 1 column — each stat gets full width so text never wraps.
-          sm+: 3 columns — fits comfortably once the viewport is wide enough.
-          flex items-center on mobile = value and label side-by-side (not stacked).
-          sm:flex-col = stack vertically in wider columns.
+          No boxes, no backgrounds. Just large numbers, thin vertical dividers,
+          and uppercase labels. This editorial treatment feels designed, not
+          generated from a template. AnimatedCounter still runs on each value.
         */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-12 sm:mb-16">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-10 sm:gap-0 mb-16 sm:mb-20">
           {STATS.map((stat, i) => (
-            <motion.div
-              key={stat.value}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.08 }}
-              className="flex sm:flex-col items-center sm:justify-center gap-4 sm:gap-1 py-5 sm:py-8 px-6 sm:px-4 bg-teal-50 dark:bg-teal-900/20 rounded-2xl border border-teal-100 dark:border-teal-800"
-            >
-              {/* AnimatedCounter counts up from 0 once the tile enters the viewport */}
-              <AnimatedCounter
-                value={stat.value}
-                className="font-heading text-3xl sm:text-4xl font-bold text-teal-700 dark:text-teal-400 tabular-nums leading-none"
-                duration={1.8}
-              />
-              <div className="text-slate-500 dark:text-slate-400 text-sm sm:text-center">{stat.label}</div>
-            </motion.div>
+            <div key={stat.value} className="flex items-center">
+              {/* Vertical divider — hidden on mobile (stats stack vertically) */}
+              {i > 0 && (
+                <div className="hidden sm:block w-px h-14 bg-slate-200 dark:bg-slate-700 mx-12 lg:mx-16 shrink-0" />
+              )}
+              <div className="text-center">
+                <AnimatedCounter
+                  value={stat.value}
+                  className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white tabular-nums leading-none"
+                  duration={1.8}
+                />
+                <p className="text-slate-400 dark:text-slate-500 text-xs font-semibold uppercase tracking-widest mt-2">
+                  {stat.label}
+                </p>
+              </div>
+            </div>
           ))}
         </div>
 
@@ -151,15 +132,20 @@ export default function SocialProof() {
         </div>
 
         {/* ── Testimonial cards ─────────────────────────────────────── */}
+        {/*
+          Masonry-ish layout: first card gets md:row-span-2 so it's visibly
+          taller than its neighbours — breaks the uniform card grid pattern.
+          On lg, the layout is 3 columns but the height asymmetry persists.
+        */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5"
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
         >
-          {TESTIMONIALS.map((t) => (
-            <TestimonialCard key={t.name} testimonial={t} />
+          {TESTIMONIALS.map((t, i) => (
+            <TestimonialCard key={t.name} testimonial={t} featured={i === 0} />
           ))}
         </motion.div>
       </div>
@@ -169,23 +155,13 @@ export default function SocialProof() {
 
 // ── Sub-components ─────────────────────────────────────────────────────────────
 
-/**
- * LogoChip
- *
- * A pill-shaped chip displaying a colored monogram and company name.
- * Uses `staggerItem` so each chip enters with a sequential delay
- * when the parent `staggerContainer` fires.
- *
- * Dark mode: chip bg white/slate-50 → slate-900, border slate-100 → slate-800.
- */
 function LogoChip({ logo }: { logo: Logo }) {
   const { staggerItem } = useAnimationVariants();
   return (
     <motion.div
       variants={staggerItem}
-      className="flex items-center gap-2 sm:gap-2.5 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 hover:border-slate-200 dark:hover:border-slate-700 transition-colors"
+      className="flex items-center gap-2 sm:gap-2.5 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-600 hover:shadow-sm transition-all"
     >
-      {/* Colored monogram — purely decorative, hidden from screen readers */}
       <div
         className={`w-6 h-6 sm:w-7 sm:h-7 rounded-md ${logo.color} flex items-center justify-center text-white text-[9px] sm:text-[10px] font-bold shrink-0`}
         aria-hidden="true"
@@ -202,38 +178,52 @@ function LogoChip({ logo }: { logo: Logo }) {
 /**
  * TestimonialCard
  *
- * Standard testimonial layout: stars → quote → author footer.
+ * @param featured  When true, the card spans 2 rows on md (taller, more prominent).
+ *                  Used for the first testimonial to break grid uniformity.
  *
- * Uses `<blockquote>` + `<cite>` for correct semantic HTML (screen readers
- * announce these as a blockquote with an author citation).
- *
- * HTML entities `&ldquo;` / `&rdquo;` are used instead of straight quotes
- * to render typographically correct curly quotation marks.
- *
- * Dark mode: card bg white → slate-900, body text slate-600 → slate-300,
- * author slate-800 → slate-100 so it stands out from the quote.
+ * Design detail: the large opening quote mark ("") is rendered as a decorative
+ * element — serif font, very light teal, positioned at the top of each card.
+ * This gives testimonials a magazine/editorial quality that diverges from
+ * the standard "5 stars + paragraph + avatar" template card.
  */
-function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
+function TestimonialCard({
+  testimonial,
+  featured,
+}: {
+  testimonial: Testimonial;
+  featured?: boolean;
+}) {
   const { staggerItem } = useAnimationVariants();
 
   return (
     <motion.blockquote
       variants={staggerItem}
-      className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 p-5 sm:p-6 shadow-sm hover:shadow-md dark:hover:shadow-slate-900/50 transition-shadow flex flex-col"
+      className={`bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 p-6 sm:p-7 hover:shadow-lg dark:hover:shadow-slate-900/60 transition-all duration-300 flex flex-col ${
+        // Featured card spans 2 rows on md — taller than neighbours
+        featured ? "md:row-span-2" : ""
+      }`}
     >
-      {/* 5 filled amber stars — aria-label announces the rating to screen readers */}
+      {/* Large decorative opening quote — editorial treatment */}
+      <div
+        className="font-serif text-6xl text-teal-200 dark:text-teal-800 leading-none mb-2 select-none"
+        aria-hidden="true"
+      >
+        &ldquo;
+      </div>
+
+      {/* 5-star rating */}
       <div className="flex gap-0.5 mb-4" aria-label="5 estrellas de 5">
         {Array.from({ length: 5 }).map((_, i) => (
-          <Star key={i} size={14} className="text-amber-400 fill-amber-400" />
+          <Star key={i} size={13} className="text-amber-400 fill-amber-400" />
         ))}
       </div>
 
-      {/* Quote text — `grow` pushes the author footer to the bottom of the card */}
-      <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-5 italic grow">
-        &ldquo;{testimonial.quote}&rdquo;
+      {/* Quote — grow pushes author to bottom */}
+      <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-6 grow">
+        {testimonial.quote}
       </p>
 
-      {/* Author section — at the bottom thanks to `mt-auto` from flex + grow above */}
+      {/* Author */}
       <footer className="flex items-center gap-3 mt-auto">
         <div
           className={`w-9 h-9 rounded-full ${testimonial.color} flex items-center justify-center text-white text-sm font-bold shrink-0`}
@@ -242,7 +232,6 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
           {testimonial.avatar}
         </div>
         <div>
-          {/* <cite> = semantic author attribution; not-italic overrides browser default */}
           <cite className="text-sm font-semibold text-slate-800 dark:text-slate-100 not-italic block">
             {testimonial.name}
           </cite>
