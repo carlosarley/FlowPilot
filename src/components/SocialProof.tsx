@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 import { useAnimationVariants } from "@/hooks/useAnimationVariants";
+import { AnimatedCounter } from "./AnimatedCounter";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -128,10 +129,12 @@ export default function SocialProof() {
               transition={{ duration: 0.4, delay: i * 0.08 }}
               className="flex sm:flex-col items-center sm:justify-center gap-4 sm:gap-1 py-5 sm:py-8 px-6 sm:px-4 bg-teal-50 dark:bg-teal-900/20 rounded-2xl border border-teal-100 dark:border-teal-800"
             >
-              {/* tabular-nums keeps digit widths consistent */}
-              <div className="font-heading text-3xl sm:text-4xl font-bold text-teal-700 dark:text-teal-400 tabular-nums leading-none">
-                {stat.value}
-              </div>
+              {/* AnimatedCounter counts up from 0 once the tile enters the viewport */}
+              <AnimatedCounter
+                value={stat.value}
+                className="font-heading text-3xl sm:text-4xl font-bold text-teal-700 dark:text-teal-400 tabular-nums leading-none"
+                duration={1.8}
+              />
               <div className="text-slate-500 dark:text-slate-400 text-sm sm:text-center">{stat.label}</div>
             </motion.div>
           ))}

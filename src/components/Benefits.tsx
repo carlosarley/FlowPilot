@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useAnimationVariants } from "@/hooks/useAnimationVariants";
+import { AnimatedCounter } from "./AnimatedCounter";
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 
@@ -166,12 +167,12 @@ function MetricCard({ metric, index }: { metric: Metric; index: number }) {
       transition={{ duration: 0.45, delay: index * 0.1, ease: "easeOut" }}
       className="flex items-center gap-5 sm:gap-6 bg-white dark:bg-slate-800 rounded-2xl p-5 sm:p-6 border border-slate-100 dark:border-slate-700 shadow-sm"
     >
-      <span
+      {/* AnimatedCounter counts up from 0 once the card slides into view */}
+      <AnimatedCounter
+        value={metric.value}
         className={`font-heading text-4xl sm:text-5xl font-bold ${metric.color} leading-none shrink-0 tabular-nums`}
-        style={{ minWidth: "4rem" }}
-      >
-        {metric.value}
-      </span>
+        duration={1.6}
+      />
       <span className="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-snug">
         {metric.label}
       </span>
