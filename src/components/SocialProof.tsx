@@ -4,15 +4,13 @@ import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 import { useAnimationVariants } from "@/hooks/useAnimationVariants";
 import { AnimatedCounter } from "./AnimatedCounter";
+import { useLanguage } from "@/contexts/LanguageContext";
 
-// ── Types ─────────────────────────────────────────────────────────────────────
+// ── Non-translatable structural data ─────────────────────────────────────────
 
 interface Logo { name: string; initial: string; color: string }
-interface Testimonial { quote: string; name: string; role: string; avatar: string; color: string }
-interface Stat { value: string; label: string }
 
-// ── Data ──────────────────────────────────────────────────────────────────────
-
+// Company logos — brand names and colors don't change with language
 const LOGOS: Logo[] = [
   { name: "Acme Corp",     initial: "AC", color: "bg-slate-700" },
   { name: "Vertex Labs",   initial: "VL", color: "bg-blue-600" },
@@ -21,56 +19,26 @@ const LOGOS: Logo[] = [
   { name: "Meridian",      initial: "ME", color: "bg-orange-600" },
 ];
 
-const TESTIMONIALS: Testimonial[] = [
-  {
-    quote: "Por fin un lugar donde las ideas no se pierden en Slack. Las reuniones de alineación bajaron de 5 a 2 por semana — y las decisiones llegan antes de que el momento pase.",
-    name: "Ana Reyes",
-    role: "Product Lead · Vertex Labs",
-    avatar: "A",
-    color: "bg-blue-500",
-  },
-  {
-    quote: "Lo que más me gusta es el historial de decisiones. Antes siempre alguien preguntaba '¿por qué hicimos esto?' Ahora la respuesta está a un clic. Eso solo ya pagó la suscripción.",
-    name: "Marco Salas",
-    role: "CTO · Synapse",
-    avatar: "M",
-    color: "bg-violet-500",
-  },
-  {
-    quote: "Migrar a FlowPilot fue lo mejor que hicimos en Q1. El equipo de diseño y el de ingeniería por fin hablan el mismo idioma — y el roadmap ya no vive en cinco Notion distintos.",
-    name: "Carla Ibáñez",
-    role: "Design Director · Polar Studio",
-    avatar: "C",
-    color: "bg-teal-500",
-  },
-];
-
-const STATS: Stat[] = [
-  { value: "2,400+", label: "equipos en lista" },
-  { value: "18",     label: "países" },
-  { value: "4.9/5",  label: "satisfacción" },
-];
-
 // ── Component ─────────────────────────────────────────────────────────────────
 
 /**
  * SocialProof
  *
- * Design changes vs. the "template" version:
+ * Design treatments that break the template feel:
  *
  * Stats:
- *   Removed the teal-50 bordered boxes — those are a dead giveaway of SaaS
- *   template kits. Replaced with an editorial/magazine-style horizontal strip:
- *   three large numbers separated by thin vertical lines, no background.
- *   Much more intentional and typographically bold.
+ *   Editorial horizontal strip — large numbers + thin vertical dividers,
+ *   no background boxes. Intentional and typographically bold.
  *
  * Testimonials:
- *   Added a large opening quotation mark (") as a decorative element per card —
- *   gives the cards a magazine/editorial quality. The first card is slightly
- *   taller via `md:row-span-2` to break the uniform grid pattern.
+ *   All cards have equal height (no md:row-span-2) — uniform masonry grid.
+ *   Large opening quote mark on each card gives editorial/magazine quality.
+ *
+ * i18n: copy and testimonial text come from t.socialProof via useLanguage().
  */
 export default function SocialProof() {
   const { staggerContainer } = useAnimationVariants();
+  const { t } = useLanguage();
 
   return (
     <section id="testimonios" className="py-16 sm:py-24 bg-white dark:bg-slate-950">
@@ -79,7 +47,7 @@ export default function SocialProof() {
         {/* ── Company logos ─────────────────────────────────────────── */}
         <div className="text-center mb-14 sm:mb-20">
           <p className="text-slate-400 dark:text-slate-500 text-xs sm:text-sm font-medium uppercase tracking-widest mb-6 sm:mb-8">
-            Equipos que ya confiaron en FlowPilot durante la beta
+            {t.socialProof.logosLabel}
           </p>
           <motion.div
             className="flex flex-wrap items-center justify-center gap-3 sm:gap-4"
@@ -97,11 +65,10 @@ export default function SocialProof() {
         {/* ── Stats — editorial horizontal strip ────────────────────── */}
         {/*
           No boxes, no backgrounds. Just large numbers, thin vertical dividers,
-          and uppercase labels. This editorial treatment feels designed, not
-          generated from a template. AnimatedCounter still runs on each value.
+          and uppercase labels. AnimatedCounter counts up on scroll.
         */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-10 sm:gap-0 mb-16 sm:mb-20">
-          {STATS.map((stat, i) => (
+          {t.socialProof.stats.map((stat, i) => (
             <div key={stat.value} className="flex items-center">
               {/* Vertical divider — hidden on mobile (stats stack vertically) */}
               {i > 0 && (
@@ -124,18 +91,18 @@ export default function SocialProof() {
         {/* ── Testimonials header ───────────────────────────────────── */}
         <div className="text-center mb-8 sm:mb-12">
           <span className="text-teal-600 dark:text-teal-400 text-xs sm:text-sm font-semibold uppercase tracking-widest">
-            Testimonios
+            {t.socialProof.statsLabel}
           </span>
           <h2 className="font-heading font-bold text-slate-900 dark:text-white text-fluid-h2 mt-3">
-            Lo que dicen los equipos
+            {t.socialProof.testimonialsHeading}
           </h2>
         </div>
 
         {/* ── Testimonial cards ─────────────────────────────────────── */}
         {/*
-          Masonry-ish layout: first card gets md:row-span-2 so it's visibly
-          taller than its neighbours — breaks the uniform card grid pattern.
-          On lg, the layout is 3 columns but the height asymmetry persists.
+          3-column grid on lg, 2-column on md, 1-column on mobile.
+          All cards have equal height — no row-span asymmetry —
+          so the grid feels intentional rather than random.
         */}
         <motion.div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5"
@@ -144,8 +111,8 @@ export default function SocialProof() {
           whileInView="visible"
           viewport={{ once: true }}
         >
-          {TESTIMONIALS.map((t, i) => (
-            <TestimonialCard key={t.name} testimonial={t} featured={i === 0} />
+          {t.socialProof.testimonials.map((testimonial) => (
+            <TestimonialCard key={testimonial.name} testimonial={testimonial} />
           ))}
         </motion.div>
       </div>
@@ -178,30 +145,23 @@ function LogoChip({ logo }: { logo: Logo }) {
 /**
  * TestimonialCard
  *
- * @param featured  When true, the card spans 2 rows on md (taller, more prominent).
- *                  Used for the first testimonial to break grid uniformity.
+ * All cards render at equal height — `flex flex-col` + `grow` on the quote
+ * pushes the author footer to the bottom regardless of quote length.
  *
- * Design detail: the large opening quote mark ("") is rendered as a decorative
- * element — serif font, very light teal, positioned at the top of each card.
- * This gives testimonials a magazine/editorial quality that diverges from
- * the standard "5 stars + paragraph + avatar" template card.
+ * The large opening quote mark (&ldquo;) is a decorative editorial element
+ * rendered at the top of each card.
  */
 function TestimonialCard({
   testimonial,
-  featured,
 }: {
-  testimonial: Testimonial;
-  featured?: boolean;
+  testimonial: { quote: string; name: string; role: string; avatar: string; color: string };
 }) {
   const { staggerItem } = useAnimationVariants();
 
   return (
     <motion.blockquote
       variants={staggerItem}
-      className={`bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 p-6 sm:p-7 hover:shadow-lg dark:hover:shadow-slate-900/60 transition-all duration-300 flex flex-col ${
-        // Featured card spans 2 rows on md — taller than neighbours
-        featured ? "md:row-span-2" : ""
-      }`}
+      className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 p-6 sm:p-7 hover:shadow-lg dark:hover:shadow-slate-900/60 transition-all duration-300 flex flex-col"
     >
       {/* Large decorative opening quote — editorial treatment */}
       <div
@@ -212,13 +172,13 @@ function TestimonialCard({
       </div>
 
       {/* 5-star rating */}
-      <div className="flex gap-0.5 mb-4" aria-label="5 estrellas de 5">
+      <div className="flex gap-0.5 mb-4" aria-label="5 stars out of 5">
         {Array.from({ length: 5 }).map((_, i) => (
           <Star key={i} size={13} className="text-amber-400 fill-amber-400" />
         ))}
       </div>
 
-      {/* Quote — grow pushes author to bottom */}
+      {/* Quote — grow pushes author to bottom, keeping all cards equal height */}
       <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-6 grow">
         {testimonial.quote}
       </p>

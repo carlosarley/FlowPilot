@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Outfit, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { LanguageProvider } from "@/contexts/LanguageContext";
 
 // ── Font configuration ────────────────────────────────────────────────────────
 // Both fonts use `display: swap` to prevent invisible text during load (FOIT).
@@ -65,12 +66,14 @@ export default function RootLayout({
     // about attribute mismatches between SSR and CSR — this suppresses it safely
     // because the difference is intentional and only affects the theme class.
     <html
-      lang="es"
+      lang="en"
       className={`${outfit.variable} ${jakarta.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <LanguageProvider>{children}</LanguageProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
