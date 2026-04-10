@@ -8,6 +8,8 @@ import { useAnimationVariants } from "@/hooks/useAnimationVariants";
  * Final call-to-action section — the last stop before the footer.
  *
  * Dark background creates visual contrast that signals "this is the close."
+ * In dark mode, the section uses a slightly lighter shade (slate-800) so it
+ * stands out from the slate-950 body background.
  *
  * Responsive behavior:
  * - Email + button: flex-col on mobile, flex-row on sm+
@@ -21,11 +23,11 @@ export default function FinalCTA() {
   const { fadeUp } = useAnimationVariants();
 
   return (
-    <section id="cta" className="py-16 sm:py-24 bg-slate-900 relative overflow-hidden">
+    <section id="cta" className="py-16 sm:py-24 bg-slate-900 dark:bg-slate-800 relative overflow-hidden">
       {/* Decorative background */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-teal-600/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-0 w-[400px] h-[300px] bg-orange-600/10 rounded-full blur-3xl" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-teal-600/10 dark:bg-teal-600/15 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-0 w-[400px] h-[300px] bg-orange-600/10 dark:bg-orange-600/15 rounded-full blur-3xl" />
         {/* Subtle grid texture */}
         <div
           className="absolute inset-0 opacity-[0.03]"

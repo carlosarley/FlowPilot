@@ -39,14 +39,14 @@ const IDEAS: IdeaCard[] = [
   {
     title: "Rediseño del onboarding",
     tag: "Idea",
-    tagColor: "bg-violet-100 text-violet-700",
+    tagColor: "bg-violet-100 text-violet-700 dark:bg-violet-900/50 dark:text-violet-400",
     avatars: ["A", "M"],
     priority: "Alta",
   },
   {
     title: "Integración con Slack",
     tag: "Idea",
-    tagColor: "bg-violet-100 text-violet-700",
+    tagColor: "bg-violet-100 text-violet-700 dark:bg-violet-900/50 dark:text-violet-400",
     avatars: ["C"],
     priority: "Media",
   },
@@ -57,21 +57,21 @@ const TASKS: TaskCard[] = [
   {
     title: "Revisar métricas Q2",
     tag: "En progreso",
-    tagColor: "bg-amber-100 text-amber-700",
+    tagColor: "bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-400",
     avatars: ["A"],
     due: "Hoy",
   },
   {
     title: "Preparar demo para stakeholders",
     tag: "En progreso",
-    tagColor: "bg-amber-100 text-amber-700",
+    tagColor: "bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-400",
     avatars: ["M", "C"],
     due: "Mañana",
   },
   {
     title: "Actualizar roadmap Q3",
     tag: "Pendiente",
-    tagColor: "bg-slate-100 text-slate-600",
+    tagColor: "bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-400",
     avatars: ["A"],
     due: "Viernes",
   },
@@ -82,14 +82,14 @@ const DECISIONS: DecisionCard[] = [
   {
     title: "Adoptar FlowPilot como workspace oficial",
     tag: "Aprobado",
-    tagColor: "bg-teal-100 text-teal-700",
+    tagColor: "bg-teal-100 text-teal-700 dark:bg-teal-900/50 dark:text-teal-400",
     avatars: ["A", "M", "C"],
     icon: "✓",
   },
   {
     title: "Migrar documentación a Notion",
     tag: "En revisión",
-    tagColor: "bg-blue-100 text-blue-700",
+    tagColor: "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-400",
     avatars: ["M"],
     icon: "○",
   },
@@ -115,10 +115,10 @@ export default function MockupUI() {
   return (
     <div
       aria-hidden="true"
-      className="w-full max-w-[580px] rounded-2xl overflow-hidden shadow-2xl shadow-slate-200/80 border border-slate-200 bg-white select-none"
+      className="w-full max-w-[580px] rounded-2xl overflow-hidden shadow-2xl shadow-slate-200/80 dark:shadow-slate-900/80 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 select-none"
     >
       {/* ── Browser chrome bar ──────────────────────────────────────── */}
-      <div className="bg-slate-50 px-4 py-3 flex items-center gap-3 border-b border-slate-200">
+      <div className="bg-slate-50 dark:bg-slate-900 px-4 py-3 flex items-center gap-3 border-b border-slate-200 dark:border-slate-700">
         {/* Traffic-light dots */}
         <div className="flex items-center gap-1.5">
           <div className="w-3 h-3 rounded-full bg-red-400" />
@@ -126,23 +126,23 @@ export default function MockupUI() {
           <div className="w-3 h-3 rounded-full bg-green-400" />
         </div>
         {/* Fake address bar */}
-        <div className="flex-1 bg-white rounded-md border border-slate-200 text-xs text-slate-400 px-3 py-1 text-center">
+        <div className="flex-1 bg-white dark:bg-slate-700 rounded-md border border-slate-200 dark:border-slate-600 text-xs text-slate-400 dark:text-slate-500 px-3 py-1 text-center">
           app.flowpilot.io/workspace/q2-lanzamiento
         </div>
       </div>
 
       {/* ── App top bar ─────────────────────────────────────────────── */}
-      <div className="bg-white px-4 py-3 flex items-center justify-between border-b border-slate-100">
+      <div className="bg-white dark:bg-slate-800 px-4 py-3 flex items-center justify-between border-b border-slate-100 dark:border-slate-700">
         {/* Logo + breadcrumb */}
         <div className="flex items-center gap-2">
           <div className="w-6 h-6 bg-teal-600 rounded-md flex items-center justify-center">
             <span className="text-white text-xs font-bold">⚡</span>
           </div>
-          <span className="font-heading font-semibold text-slate-800 text-sm">
+          <span className="font-heading font-semibold text-slate-800 dark:text-slate-100 text-sm">
             FlowPilot
           </span>
-          <span className="text-slate-300 text-xs">/</span>
-          <span className="text-slate-500 text-xs font-medium">Q2 Lanzamiento</span>
+          <span className="text-slate-300 dark:text-slate-600 text-xs">/</span>
+          <span className="text-slate-500 dark:text-slate-400 text-xs font-medium">Q2 Lanzamiento</span>
         </div>
 
         {/* Stacked team avatars + invite button */}
@@ -150,59 +150,59 @@ export default function MockupUI() {
           {TEAM_MEMBERS.map(({ initial, color }, i) => (
             <div
               key={initial}
-              className={`w-6 h-6 rounded-full border-2 border-white flex items-center justify-center text-[10px] font-bold text-white ${color} ${
+              className={`w-6 h-6 rounded-full border-2 border-white dark:border-slate-800 flex items-center justify-center text-[10px] font-bold text-white ${color} ${
                 i > 0 ? "-ml-1" : ""
               }`}
             >
               {initial}
             </div>
           ))}
-          <button className="ml-2 w-6 h-6 rounded-full bg-slate-100 text-slate-500 text-xs flex items-center justify-center font-bold">
+          <button className="ml-2 w-6 h-6 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 text-xs flex items-center justify-center font-bold">
             +
           </button>
         </div>
       </div>
 
       {/* ── Kanban board ────────────────────────────────────────────── */}
-      <div className="bg-slate-50/50 p-3 grid grid-cols-3 gap-2">
+      <div className="bg-slate-50/50 dark:bg-slate-900/50 p-3 grid grid-cols-3 gap-2">
         {/* Ideas column */}
-        <KanbanColumn title="💡 Ideas" count={IDEAS.length} color="text-violet-600">
+        <KanbanColumn title="💡 Ideas" count={IDEAS.length} color="text-violet-600 dark:text-violet-400">
           {IDEAS.map((card, i) => (
             <KanbanCard key={i}>
               <StatusBadge label={card.tag} className={card.tagColor} />
-              <p className="text-xs font-medium text-slate-700 leading-tight mt-1.5">
+              <p className="text-xs font-medium text-slate-700 dark:text-slate-200 leading-tight mt-1.5">
                 {card.title}
               </p>
               <div className="flex items-center justify-between mt-2">
                 <AvatarStack initials={card.avatars} />
-                <span className="text-[9px] text-slate-400">{card.priority}</span>
+                <span className="text-[9px] text-slate-400 dark:text-slate-500">{card.priority}</span>
               </div>
             </KanbanCard>
           ))}
         </KanbanColumn>
 
         {/* Tasks column */}
-        <KanbanColumn title="✓ Tareas" count={TASKS.length} color="text-amber-600">
+        <KanbanColumn title="✓ Tareas" count={TASKS.length} color="text-amber-600 dark:text-amber-400">
           {TASKS.map((card, i) => (
             <KanbanCard key={i}>
               <StatusBadge label={card.tag} className={card.tagColor} />
-              <p className="text-xs font-medium text-slate-700 leading-tight mt-1.5">
+              <p className="text-xs font-medium text-slate-700 dark:text-slate-200 leading-tight mt-1.5">
                 {card.title}
               </p>
               <div className="flex items-center justify-between mt-2">
                 <AvatarStack initials={card.avatars} />
-                <span className="text-[9px] text-slate-400">{card.due}</span>
+                <span className="text-[9px] text-slate-400 dark:text-slate-500">{card.due}</span>
               </div>
             </KanbanCard>
           ))}
         </KanbanColumn>
 
         {/* Decisions column */}
-        <KanbanColumn title="◎ Decisiones" count={DECISIONS.length} color="text-teal-600">
+        <KanbanColumn title="◎ Decisiones" count={DECISIONS.length} color="text-teal-600 dark:text-teal-400">
           {DECISIONS.map((card, i) => (
             <KanbanCard key={i}>
               <StatusBadge label={`${card.icon} ${card.tag}`} className={card.tagColor} />
-              <p className="text-xs font-medium text-slate-700 leading-tight mt-1.5">
+              <p className="text-xs font-medium text-slate-700 dark:text-slate-200 leading-tight mt-1.5">
                 {card.title}
               </p>
               <div className="flex items-center justify-between mt-2">
@@ -214,9 +214,9 @@ export default function MockupUI() {
       </div>
 
       {/* ── Status bar ──────────────────────────────────────────────── */}
-      <div className="bg-white px-4 py-2 border-t border-slate-100 flex items-center justify-between">
-        <span className="text-[10px] text-slate-400">7 elementos · 3 activos</span>
-        <span className="text-[10px] text-teal-600 font-medium">
+      <div className="bg-white dark:bg-slate-800 px-4 py-2 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
+        <span className="text-[10px] text-slate-400 dark:text-slate-500">7 elementos · 3 activos</span>
+        <span className="text-[10px] text-teal-600 dark:text-teal-400 font-medium">
           ● En vivo · 3 colaboradores
         </span>
       </div>
@@ -244,7 +244,7 @@ function KanbanColumn({
         <span className={`text-[10px] font-bold uppercase tracking-wide ${color}`}>
           {title}
         </span>
-        <span className="text-[10px] text-slate-400 bg-slate-100 rounded-full w-4 h-4 flex items-center justify-center font-semibold">
+        <span className="text-[10px] text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-700 rounded-full w-4 h-4 flex items-center justify-center font-semibold">
           {count}
         </span>
       </div>
@@ -256,7 +256,7 @@ function KanbanColumn({
 /** White card container with hover elevation */
 function KanbanCard({ children }: { children: React.ReactNode }) {
   return (
-    <div className="bg-white rounded-lg border border-slate-100 p-2 shadow-sm hover:shadow-md hover:border-slate-200 transition-all cursor-pointer">
+    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-100 dark:border-slate-700 p-2 shadow-sm hover:shadow-md hover:border-slate-200 dark:hover:border-slate-600 transition-all cursor-pointer">
       {children}
     </div>
   );
@@ -283,7 +283,7 @@ function AvatarStack({ initials }: { initials: string[] }) {
       {initials.map((initial, i) => (
         <div
           key={i}
-          className={`w-4 h-4 rounded-full ${COLORS[i % COLORS.length]} flex items-center justify-center text-[8px] font-bold text-white border border-white`}
+          className={`w-4 h-4 rounded-full ${COLORS[i % COLORS.length]} flex items-center justify-center text-[8px] font-bold text-white border border-white dark:border-slate-800`}
         >
           {initial}
         </div>

@@ -22,21 +22,21 @@ const LOGOS: Logo[] = [
 
 const TESTIMONIALS: Testimonial[] = [
   {
-    quote: "Por fin un lugar donde las ideas no se pierden en Slack. Desde que empezamos a usar FlowPilot, las reuniones de alineación bajaron de 5 a 2 por semana.",
+    quote: "Por fin un lugar donde las ideas no se pierden en Slack. Las reuniones de alineación bajaron de 5 a 2 por semana — y las decisiones llegan antes de que el momento pase.",
     name: "Ana Reyes",
     role: "Product Lead · Vertex Labs",
     avatar: "A",
     color: "bg-blue-500",
   },
   {
-    quote: "Lo que más me gusta es el historial de decisiones. Antes siempre alguien preguntaba '¿por qué hicimos esto?' Ahora la respuesta está a un clic.",
+    quote: "Lo que más me gusta es el historial de decisiones. Antes siempre alguien preguntaba '¿por qué hicimos esto?' Ahora la respuesta está a un clic. Eso solo ya pagó la suscripción.",
     name: "Marco Salas",
     role: "CTO · Synapse",
     avatar: "M",
     color: "bg-violet-500",
   },
   {
-    quote: "Migrar a FlowPilot fue lo mejor que hicimos en Q1. El equipo de diseño y el de ingeniería por fin hablan el mismo idioma.",
+    quote: "Migrar a FlowPilot fue lo mejor que hicimos en Q1. El equipo de diseño y el de ingeniería por fin hablan el mismo idioma — y el roadmap ya no vive en cinco Notion distintos.",
     name: "Carla Ibáñez",
     role: "Design Director · Polar Studio",
     avatar: "C",
@@ -66,32 +66,25 @@ export default function SocialProof() {
   const { staggerContainer } = useAnimationVariants();
 
   return (
-    <section id="testimonios" className="py-16 sm:py-24 bg-white">
+    <section id="testimonios" className="py-16 sm:py-24 bg-white dark:bg-slate-950">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
 
         {/* ── Company logos ────────────────────────────────────────── */}
         <div className="text-center mb-12 sm:mb-16">
-          <p className="text-slate-400 text-xs sm:text-sm font-medium uppercase tracking-widest mb-6 sm:mb-8">
+          <p className="text-slate-400 dark:text-slate-500 text-xs sm:text-sm font-medium uppercase tracking-widest mb-6 sm:mb-8">
             Equipos que ya confiaron en FlowPilot durante la beta
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6">
+          <motion.div
+            className="flex flex-wrap items-center justify-center gap-3 sm:gap-6"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
             {LOGOS.map((logo) => (
-              <div
-                key={logo.name}
-                className="flex items-center gap-2 sm:gap-2.5 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl border border-slate-100 bg-slate-50 hover:border-slate-200 transition-colors"
-              >
-                <div
-                  className={`w-6 h-6 sm:w-7 sm:h-7 rounded-md ${logo.color} flex items-center justify-center text-white text-[9px] sm:text-[10px] font-bold shrink-0`}
-                  aria-hidden="true"
-                >
-                  {logo.initial}
-                </div>
-                <span className="text-slate-600 text-xs sm:text-sm font-semibold whitespace-nowrap">
-                  {logo.name}
-                </span>
-              </div>
+              <LogoChip key={logo.name} logo={logo} />
             ))}
-          </div>
+          </motion.div>
         </div>
 
         {/* ── Stats grid ───────────────────────────────────────────── */}
@@ -107,22 +100,22 @@ export default function SocialProof() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.08 }}
-              className="flex sm:flex-col items-center sm:justify-center gap-4 sm:gap-1 py-5 sm:py-8 px-6 sm:px-4 bg-teal-50 rounded-2xl border border-teal-100"
+              className="flex sm:flex-col items-center sm:justify-center gap-4 sm:gap-1 py-5 sm:py-8 px-6 sm:px-4 bg-teal-50 dark:bg-teal-900/20 rounded-2xl border border-teal-100 dark:border-teal-800"
             >
-              <div className="font-heading text-3xl sm:text-4xl font-bold text-teal-700 tabular-nums leading-none">
+              <div className="font-heading text-3xl sm:text-4xl font-bold text-teal-700 dark:text-teal-400 tabular-nums leading-none">
                 {stat.value}
               </div>
-              <div className="text-slate-500 text-sm sm:text-center">{stat.label}</div>
+              <div className="text-slate-500 dark:text-slate-400 text-sm sm:text-center">{stat.label}</div>
             </motion.div>
           ))}
         </div>
 
         {/* ── Testimonials header ───────────────────────────────────── */}
         <div className="text-center mb-8 sm:mb-12">
-          <span className="text-teal-600 text-xs sm:text-sm font-semibold uppercase tracking-widest">
+          <span className="text-teal-600 dark:text-teal-400 text-xs sm:text-sm font-semibold uppercase tracking-widest">
             Testimonios
           </span>
-          <h2 className="font-heading font-bold text-slate-900 text-fluid-h2 mt-3">
+          <h2 className="font-heading font-bold text-slate-900 dark:text-white text-fluid-h2 mt-3">
             Lo que dicen los equipos
           </h2>
         </div>
@@ -144,7 +137,27 @@ export default function SocialProof() {
   );
 }
 
-// ── Sub-component ─────────────────────────────────────────────────────────────
+// ── Sub-components ─────────────────────────────────────────────────────────────
+
+function LogoChip({ logo }: { logo: Logo }) {
+  const { staggerItem } = useAnimationVariants();
+  return (
+    <motion.div
+      variants={staggerItem}
+      className="flex items-center gap-2 sm:gap-2.5 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 hover:border-slate-200 dark:hover:border-slate-700 transition-colors"
+    >
+      <div
+        className={`w-6 h-6 sm:w-7 sm:h-7 rounded-md ${logo.color} flex items-center justify-center text-white text-[9px] sm:text-[10px] font-bold shrink-0`}
+        aria-hidden="true"
+      >
+        {logo.initial}
+      </div>
+      <span className="text-slate-600 dark:text-slate-300 text-xs sm:text-sm font-semibold whitespace-nowrap">
+        {logo.name}
+      </span>
+    </motion.div>
+  );
+}
 
 function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   const { staggerItem } = useAnimationVariants();
@@ -152,7 +165,7 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   return (
     <motion.blockquote
       variants={staggerItem}
-      className="bg-white rounded-2xl border border-slate-100 p-5 sm:p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col"
+      className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 p-5 sm:p-6 shadow-sm hover:shadow-md dark:hover:shadow-slate-900/50 transition-shadow flex flex-col"
     >
       {/* 5-star rating */}
       <div className="flex gap-0.5 mb-4" aria-label="5 estrellas de 5">
@@ -162,8 +175,8 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
       </div>
 
       {/* Quote */}
-      <p className="text-slate-600 text-sm leading-relaxed mb-5 italic grow">
-        "{testimonial.quote}"
+      <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-5 italic grow">
+        &ldquo;{testimonial.quote}&rdquo;
       </p>
 
       {/* Author */}
@@ -175,10 +188,10 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
           {testimonial.avatar}
         </div>
         <div>
-          <cite className="text-sm font-semibold text-slate-800 not-italic block">
+          <cite className="text-sm font-semibold text-slate-800 dark:text-slate-100 not-italic block">
             {testimonial.name}
           </cite>
-          <p className="text-xs text-slate-400">{testimonial.role}</p>
+          <p className="text-xs text-slate-400 dark:text-slate-500">{testimonial.role}</p>
         </div>
       </footer>
     </motion.blockquote>

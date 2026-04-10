@@ -3,12 +3,13 @@
 import { Menu, X, Zap } from "lucide-react";
 import { useScrollDetection } from "@/hooks/useScrollDetection";
 import { useMobileMenu } from "@/hooks/useMobileMenu";
+import { ThemeToggle } from "./ThemeToggle";
 
 // Navigation items shared between desktop and mobile menus
 const NAV_LINKS = [
   { label: "Características", href: "#caracteristicas" },
-  { label: "Beneficios", href: "#beneficios" },
-  { label: "Testimonios", href: "#testimonios" },
+  { label: "Beneficios",      href: "#beneficios" },
+  { label: "Testimonios",     href: "#testimonios" },
 ];
 
 /**
@@ -29,7 +30,7 @@ export default function Nav() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-100"
+          ? "bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-sm border-b border-slate-100 dark:border-slate-800"
           : "bg-transparent"
       }`}
     >
@@ -43,7 +44,7 @@ export default function Nav() {
           <div className="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center group-hover:bg-teal-700 transition-colors">
             <Zap size={16} className="text-white fill-white" />
           </div>
-          <span className="font-heading font-bold text-slate-900 text-lg tracking-tight">
+          <span className="font-heading font-bold text-slate-900 dark:text-white text-lg tracking-tight">
             FlowPilot
           </span>
         </a>
@@ -57,39 +58,43 @@ export default function Nav() {
             <a
               key={href}
               href={href}
-              className="text-slate-500 hover:text-teal-700 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 rounded-sm"
+              className="text-slate-500 dark:text-slate-400 hover:text-teal-700 dark:hover:text-teal-400 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 rounded-sm"
             >
               {label}
             </a>
           ))}
         </nav>
 
-        {/* Desktop CTAs */}
-        <div className="hidden md:flex items-center gap-3 shrink-0">
+        {/* Desktop CTAs + theme toggle */}
+        <div className="hidden md:flex items-center gap-2 shrink-0">
+          <ThemeToggle />
           <a
             href="#cta"
-            className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 rounded-sm px-1"
+            className="text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 rounded-sm px-1"
           >
             Iniciar sesión
           </a>
           <a
             href="#cta"
-            className="bg-teal-600 hover:bg-teal-700 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-all hover:shadow-md hover:shadow-teal-200 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2"
+            className="bg-teal-600 hover:bg-teal-700 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-all hover:shadow-md hover:shadow-teal-200 dark:hover:shadow-teal-900 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900"
           >
             Solicitar acceso
           </a>
         </div>
 
-        {/* Hamburger — visible only on mobile. 44×44px minimum touch target */}
-        <button
-          onClick={toggle}
-          className="md:hidden flex items-center justify-center w-11 h-11 -mr-1 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
-          aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
-          aria-expanded={isOpen}
-          aria-controls="mobile-menu"
-        >
-          {isOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
+        {/* Hamburger + theme toggle — visible only on mobile */}
+        <div className="md:hidden flex items-center gap-1 -mr-1">
+          <ThemeToggle />
+          <button
+            onClick={toggle}
+            className="flex items-center justify-center w-11 h-11 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
+            aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
+            aria-expanded={isOpen}
+            aria-controls="mobile-menu"
+          >
+            {isOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
       </div>
 
       {/* ── Mobile drawer ────────────────────────────────────────────── */}
@@ -98,18 +103,18 @@ export default function Nav() {
         id="mobile-menu"
         role="dialog"
         aria-label="Menú de navegación"
-        className={`md:hidden overflow-hidden transition-all duration-300 bg-white border-t border-slate-100 ${
+        className={`md:hidden overflow-hidden transition-all duration-300 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 ${
           isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0 pointer-events-none"
         }`}
         aria-hidden={!isOpen}
       >
-        <nav className="px-4 py-3 flex flex-col divide-y divide-slate-50">
+        <nav className="px-4 py-3 flex flex-col divide-y divide-slate-50 dark:divide-slate-800">
           {NAV_LINKS.map(({ label, href }) => (
             <a
               key={href}
               href={href}
               // min 48px height = adequate touch target per WCAG 2.5.5
-              className="flex items-center text-slate-700 font-medium py-3.5 text-base hover:text-teal-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 rounded-sm"
+              className="flex items-center text-slate-700 dark:text-slate-200 font-medium py-3.5 text-base hover:text-teal-700 dark:hover:text-teal-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 rounded-sm"
               onClick={close}
             >
               {label}
@@ -118,7 +123,7 @@ export default function Nav() {
           {/* Full-width primary CTA at the bottom of the drawer */}
           <a
             href="#cta"
-            className="mt-3 flex items-center justify-center bg-teal-600 hover:bg-teal-700 text-white font-semibold px-4 py-3.5 rounded-xl text-center transition-all active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2"
+            className="mt-3 flex items-center justify-center bg-teal-600 hover:bg-teal-700 text-white font-semibold px-4 py-3.5 rounded-xl text-center transition-all active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900"
             onClick={close}
           >
             Solicitar acceso anticipado

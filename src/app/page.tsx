@@ -13,8 +13,8 @@ export default function Home() {
       <main>
         <Hero />
         <Features />
-        <Benefits />
         <SocialProof />
+        <Benefits />
         <FinalCTA />
       </main>
       <Footer />

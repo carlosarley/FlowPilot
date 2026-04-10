@@ -13,9 +13,9 @@ interface Metric {
 }
 
 const METRICS: Metric[] = [
-  { value: "3x", label: "más rápidas las decisiones de equipo", color: "text-teal-600" },
-  { value: "80%", label: "menos emails por reunión", color: "text-orange-600" },
-  { value: "100%", label: "de contexto en cada tarea", color: "text-violet-600" },
+  { value: "3x",   label: "más rápidas las decisiones de equipo", color: "text-teal-600 dark:text-teal-400" },
+  { value: "80%",  label: "menos emails por reunión",             color: "text-orange-600 dark:text-orange-400" },
+  { value: "100%", label: "de contexto en cada tarea",            color: "text-violet-600 dark:text-violet-400" },
 ];
 
 const VALUE_POINTS = [
@@ -41,7 +41,7 @@ export default function Benefits() {
   const { fadeLeft, fadeRight } = useAnimationVariants();
 
   return (
-    <section id="beneficios" className="py-16 sm:py-24 bg-slate-50">
+    <section id="beneficios" className="py-16 sm:py-24 bg-slate-50 dark:bg-slate-900">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
 
@@ -66,16 +66,16 @@ export default function Benefits() {
             whileInView="visible"
             viewport={{ once: true }}
           >
-            <span className="text-teal-600 text-xs sm:text-sm font-semibold uppercase tracking-widest">
-              Propuesta de valor
+            <span className="text-teal-600 dark:text-teal-400 text-xs sm:text-sm font-semibold uppercase tracking-widest">
+              Por qué FlowPilot
             </span>
 
-            <h2 className="font-heading font-bold text-slate-900 text-fluid-h2 mt-3 mb-5">
+            <h2 className="font-heading font-bold text-slate-900 dark:text-white text-fluid-h2 mt-3 mb-5">
               Trabaja con claridad.{" "}
-              <span className="text-teal-600">Avanza con confianza.</span>
+              <span className="text-teal-600 dark:text-teal-400">Avanza con confianza.</span>
             </h2>
 
-            <p className="text-slate-500 text-base sm:text-lg leading-relaxed mb-7">
+            <p className="text-slate-500 dark:text-slate-400 text-base sm:text-lg leading-relaxed mb-7">
               No es otra herramienta más. Es el lugar donde el pensamiento del
               equipo se convierte en acción — sin la fricción de coordinar entre
               cinco apps distintas.
@@ -85,19 +85,19 @@ export default function Benefits() {
               {VALUE_POINTS.map((point) => (
                 <li key={point} className="flex items-start gap-3">
                   <span
-                    className="w-5 h-5 rounded-full bg-teal-100 flex items-center justify-center shrink-0 mt-0.5"
+                    className="w-5 h-5 rounded-full bg-teal-100 dark:bg-teal-900/50 flex items-center justify-center shrink-0 mt-0.5"
                     aria-hidden="true"
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-teal-600" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-teal-600 dark:bg-teal-400" />
                   </span>
-                  <span className="text-slate-600 text-sm leading-relaxed">{point}</span>
+                  <span className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">{point}</span>
                 </li>
               ))}
             </ul>
 
             <a
               href="#cta"
-              className="inline-flex items-center gap-2 text-teal-700 hover:text-teal-900 font-semibold text-sm hover:gap-3 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 rounded-sm"
+              className="inline-flex items-center gap-2 text-teal-700 dark:text-teal-400 hover:text-teal-900 dark:hover:text-teal-300 font-semibold text-sm hover:gap-3 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 rounded-sm"
             >
               Quiero probarlo
               <ArrowRight size={16} aria-hidden="true" />
@@ -117,8 +117,8 @@ function MetricCard({ metric, index }: { metric: Metric; index: number }) {
       initial={{ opacity: 0, x: -16 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
-      className="flex items-center gap-5 sm:gap-6 bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-sm"
+      transition={{ duration: 0.45, delay: index * 0.1, ease: "easeOut" }}
+      className="flex items-center gap-5 sm:gap-6 bg-white dark:bg-slate-800 rounded-2xl p-5 sm:p-6 border border-slate-100 dark:border-slate-700 shadow-sm"
     >
       {/* Large metric — tabular-nums keeps digits aligned across all values */}
       <span
@@ -127,7 +127,7 @@ function MetricCard({ metric, index }: { metric: Metric; index: number }) {
       >
         {metric.value}
       </span>
-      <span className="text-slate-600 text-sm sm:text-base leading-snug">
+      <span className="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-snug">
         {metric.label}
       </span>
     </motion.div>

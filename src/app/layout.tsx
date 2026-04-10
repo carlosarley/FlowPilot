@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Outfit, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 // ── Font configuration ────────────────────────────────────────────────────────
 // Both fonts use `display: swap` to prevent invisible text during load.
@@ -53,11 +54,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
+    // suppressHydrationWarning prevents React from warning about the
+    // class mismatch caused by next-themes injecting "dark" on the client.
     <html
       lang="es"
       className={`${outfit.variable} ${jakarta.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col bg-white">{children}</body>
+      <body className="min-h-full flex flex-col bg-background text-foreground">
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   );
 }

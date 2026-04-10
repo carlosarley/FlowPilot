@@ -23,10 +23,10 @@ interface Feature {
 const FEATURES: Feature[] = [
   {
     icon: Lightbulb,
-    color: "text-violet-600",
-    bg: "bg-violet-50",
-    border: "border-violet-100",
-    hoverBorder: "hover:border-violet-200",
+    color: "text-violet-600 dark:text-violet-400",
+    bg: "bg-violet-50 dark:bg-violet-900/30",
+    border: "border-violet-100 dark:border-violet-800",
+    hoverBorder: "hover:border-violet-200 dark:hover:border-violet-700",
     title: "Captura ideas al vuelo",
     description:
       "Un espacio compartido donde nada se pierde. El equipo aporta en tiempo real, sin threads interminables ni juntas innecesarias.",
@@ -34,10 +34,10 @@ const FEATURES: Feature[] = [
   },
   {
     icon: CheckSquare,
-    color: "text-teal-600",
-    bg: "bg-teal-50",
-    border: "border-teal-100",
-    hoverBorder: "hover:border-teal-200",
+    color: "text-teal-600 dark:text-teal-400",
+    bg: "bg-teal-50 dark:bg-teal-900/30",
+    border: "border-teal-100 dark:border-teal-800",
+    hoverBorder: "hover:border-teal-200 dark:hover:border-teal-700",
     title: "Convierte ideas en tareas",
     description:
       "De la conversación a la acción en un clic. Asigna, prioriza y da seguimiento sin cambiar de herramienta ni perder el hilo.",
@@ -45,10 +45,10 @@ const FEATURES: Feature[] = [
   },
   {
     icon: BookOpen,
-    color: "text-orange-600",
-    bg: "bg-orange-50",
-    border: "border-orange-100",
-    hoverBorder: "hover:border-orange-200",
+    color: "text-orange-600 dark:text-orange-400",
+    bg: "bg-orange-50 dark:bg-orange-900/30",
+    border: "border-orange-100 dark:border-orange-800",
+    hoverBorder: "hover:border-orange-200 dark:hover:border-orange-700",
     title: "Toma decisiones con contexto",
     description:
       "FlowPilot registra el porqué de cada decisión. Siempre sabes qué se decidió, quién lo decidió y por qué se llegó ahí.",
@@ -73,17 +73,17 @@ export default function Features() {
   const { staggerContainer } = useAnimationVariants();
 
   return (
-    <section id="caracteristicas" className="py-16 sm:py-24 bg-white">
+    <section id="caracteristicas" className="py-16 sm:py-24 bg-white dark:bg-slate-950">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Section header */}
         <div className="max-w-2xl mb-10 sm:mb-16">
-          <span className="text-teal-600 text-xs sm:text-sm font-semibold uppercase tracking-widest">
+          <span className="text-teal-600 dark:text-teal-400 text-xs sm:text-sm font-semibold uppercase tracking-widest">
             Características
           </span>
-          <h2 className="font-heading font-bold text-slate-900 text-fluid-h2 mt-3 mb-4">
+          <h2 className="font-heading font-bold text-slate-900 dark:text-white text-fluid-h2 mt-3 mb-4">
             Tres piezas. Un solo flujo.
           </h2>
-          <p className="text-slate-500 text-base sm:text-lg leading-relaxed">
+          <p className="text-slate-500 dark:text-slate-400 text-base sm:text-lg leading-relaxed">
             La mayoría de los equipos pierden tiempo saltando entre apps. FlowPilot
             conecta el pensamiento con la ejecución, sin interrupciones.
           </p>
@@ -115,7 +115,7 @@ function FeatureCard({ feature }: { feature: Feature }) {
   return (
     <motion.article
       variants={staggerItem}
-      className={`group relative rounded-2xl border ${feature.border} ${feature.hoverBorder} p-6 lg:p-8 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-white`}
+      className={`group relative rounded-2xl border ${feature.border} ${feature.hoverBorder} p-6 lg:p-8 hover:shadow-lg dark:hover:shadow-slate-900/50 transition-all duration-300 hover:-translate-y-1 bg-white dark:bg-slate-900`}
     >
       {/* Icon container */}
       <div
@@ -125,11 +125,11 @@ function FeatureCard({ feature }: { feature: Feature }) {
         <Icon size={20} className={feature.color} />
       </div>
 
-      <h3 className="font-heading font-bold text-slate-900 text-fluid-h3 mb-2.5">
+      <h3 className="font-heading font-bold text-slate-900 dark:text-white text-fluid-h3 mb-2.5">
         {feature.title}
       </h3>
 
-      <p className="text-slate-500 text-sm leading-relaxed mb-4">
+      <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-4">
         {feature.description}
       </p>
 
