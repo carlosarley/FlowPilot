@@ -98,26 +98,50 @@
 }
 
 /* ── Dark mode tokens ─────────────────────────────────────────────────────── */
-
+/*
+ * These variables override the :root values whenever the <html> element has
+ * the "dark" class (injected by next-themes at runtime).
+ *
+ * The @custom-variant rule at the top of this file makes every Tailwind
+ * `dark:` utility active for any descendant of .dark — so both the CSS
+ * variable system (used by shadcn components) and the utility classes
+ * (used directly in JSX) switch together.
+ *
+ * Color scale used (all in OKLCH for perceptual uniformity):
+ *   Background layers (darkest → lightest):
+ *     slate-950  0.10  — page body, Footer
+ *     slate-900  0.14  — cards, sections, drawers
+ *     slate-800  0.18  — elevated surfaces (modals, kanban cards)
+ *     slate-700  0.25  — borders, input backgrounds
+ *
+ *   Text (lightest → darkest):
+ *     near-white 0.97  — primary headings
+ *     slate-300  0.80  — body copy, list items
+ *     slate-400  0.65  — secondary / muted text
+ *     slate-500  0.55  — placeholders, captions
+ *
+ *   Accent colors shift one step lighter (600 → 400) so they remain
+ *   legible against dark backgrounds at WCAG AA (≥ 4.5:1 contrast ratio).
+ */
 .dark {
-  --background: oklch(0.10 0.01 247);         /* slate-950 */
-  --foreground: oklch(0.97 0 0);              /* near white */
-  --card: oklch(0.14 0.01 247);               /* slate-900 */
+  --background: oklch(0.10 0.01 247);         /* slate-950 — deepest bg layer */
+  --foreground: oklch(0.97 0 0);              /* near-white — primary text */
+  --card: oklch(0.14 0.01 247);               /* slate-900 — card surfaces */
   --card-foreground: oklch(0.97 0 0);
   --popover: oklch(0.14 0.01 247);
   --popover-foreground: oklch(0.97 0 0);
-  --primary: oklch(0.65 0.118 184.7);         /* teal-400 — brighter on dark */
+  --primary: oklch(0.65 0.118 184.7);         /* teal-400 (was teal-600 in light) */
   --primary-foreground: oklch(0.10 0 0);
-  --secondary: oklch(0.20 0 0);
+  --secondary: oklch(0.20 0 0);               /* slate-800 */
   --secondary-foreground: oklch(0.97 0 0);
   --muted: oklch(0.20 0 0);
   --muted-foreground: oklch(0.65 0.01 247);   /* slate-400 */
-  --accent: oklch(0.70 0.200 41.116);         /* orange-400 — brighter on dark */
+  --accent: oklch(0.70 0.200 41.116);         /* orange-400 (was orange-600 in light) */
   --accent-foreground: oklch(0.10 0 0);
-  --destructive: oklch(0.65 0.245 27.325);
-  --border: oklch(0.25 0.01 247);             /* slate-800 */
-  --input: oklch(0.20 0.01 247);
-  --ring: oklch(0.65 0.118 184.7);
+  --destructive: oklch(0.65 0.245 27.325);    /* red-400 */
+  --border: oklch(0.25 0.01 247);             /* slate-700/800 — subtle dividers */
+  --input: oklch(0.20 0.01 247);              /* slate-800 — form field bg */
+  --ring: oklch(0.65 0.118 184.7);            /* teal-400 — focus rings */
   --sidebar: oklch(0.14 0.01 247);
   --sidebar-foreground: oklch(0.97 0 0);
   --sidebar-primary: oklch(0.65 0.118 184.7);

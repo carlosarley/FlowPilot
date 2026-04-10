@@ -4,8 +4,12 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
 // ── Font configuration ────────────────────────────────────────────────────────
-// Both fonts use `display: swap` to prevent invisible text during load.
-// `variable` exposes each font as a CSS custom property consumed in globals.css.
+// Both fonts use `display: swap` to prevent invisible text during load (FOIT).
+// The `variable` option exposes each font as a CSS custom property:
+//   --font-outfit    → consumed as `--font-heading` in @theme inline
+//   --font-jakarta   → consumed as `--font-sans` in @theme inline
+// `adjustFontFallback: true` generates a fallback @font-face whose metrics
+// closely match the real font, minimising Cumulative Layout Shift (CLS).
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -25,8 +29,10 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 // ── Viewport ──────────────────────────────────────────────────────────────────
-// viewport-fit=cover ensures the layout extends under the iOS notch / home bar.
-// Never disable user scaling — it breaks accessibility.
+// `viewportFit: "cover"` makes the page extend into iOS notch / Dynamic Island
+// and behind the home bar — paired with `env(safe-area-inset-*)` padding in CSS
+// so content is never obscured.
+// User scaling is intentionally left enabled — disabling it breaks WCAG 1.4.4.
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -54,8 +60,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    // suppressHydrationWarning prevents React from warning about the
-    // class mismatch caused by next-themes injecting "dark" on the client.
+    // suppressHydrationWarning: next-themes injects `class="dark"` on <html>
+    // client-side after hydration. Without this flag React would log a warning
+    // about attribute mismatches between SSR and CSR — this suppresses it safely
+    // because the difference is intentional and only affects the theme class.
     <html
       lang="es"
       className={`${outfit.variable} ${jakarta.variable} h-full antialiased`}

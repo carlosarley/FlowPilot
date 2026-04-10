@@ -9,17 +9,35 @@ import { useAnimationVariants } from "@/hooks/useAnimationVariants";
 
 interface Feature {
   icon: LucideIcon;
+  // Tailwind class for the icon color and the detail line text color.
+  // Includes a dark: variant because accent colors need to be one step
+  // lighter in dark mode to maintain WCAG AA contrast (e.g. violet-600 → violet-400).
   color: string;
+  // Icon container background (tint of the same accent color family).
   bg: string;
+  // Card border — default state.
   border: string;
+  // Card border — hover state. Kept separate so each card can have its own hue.
   hoverBorder: string;
   title: string;
   description: string;
+  // Short reinforcing tagline displayed at the bottom of each card in accent color.
   detail: string;
 }
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 
+/*
+ * Each feature maps to one of FlowPilot's three core pillars:
+ *   1. Capture (violet)  — ideas, notes, voice memos
+ *   2. Execute (teal)    — tasks, assignments, priorities
+ *   3. Decide (orange)   — decisions, history, accountability
+ *
+ * Dark mode strategy for accent classes:
+ *   - `color`: 600 → 400 (lighter = more readable on dark bg)
+ *   - `bg`: -50 → -900/30 (dark semi-transparent tint instead of pastel)
+ *   - `border` / `hoverBorder`: -100/-200 → -800/-700 (visible on slate-900 card)
+ */
 const FEATURES: Feature[] = [
   {
     icon: Lightbulb,
@@ -59,15 +77,25 @@ const FEATURES: Feature[] = [
 // ── Component ─────────────────────────────────────────────────────────────────
 
 /**
- * Features section.
+ * Features
  *
- * Responsive grid:
- * - Mobile: single column, p-6 padding
- * - md+: two columns
- * - lg+: three columns, p-8 padding
+ * Three-pillar section that explains what FlowPilot does.
  *
- * Cards stagger in with 120ms between each using `staggerContainer` +
- * `staggerItem` variants from `useAnimationVariants`.
+ * Layout:
+ *   Mobile:  1 column → each card full-width, generous padding (p-6)
+ *   md:      2 columns
+ *   lg:      3 columns, larger padding (p-8)
+ *
+ * Animation:
+ *   Cards stagger in with a 120ms delay between each (defined in
+ *   `staggerContainer` / `staggerItem` inside useAnimationVariants).
+ *   `margin: "-60px"` on the viewport means the animation fires 60px
+ *   before the section enters the viewport — feels more natural.
+ *
+ * Dark mode:
+ *   Section bg: white → slate-950
+ *   Card bg:    white → slate-900 (one step lighter than section = subtle depth)
+ *   Box shadow: default slate → slate-900/50 (softer on dark backgrounds)
  */
 export default function Features() {
   const { staggerContainer } = useAnimationVariants();
@@ -75,8 +103,10 @@ export default function Features() {
   return (
     <section id="caracteristicas" className="py-16 sm:py-24 bg-white dark:bg-slate-950">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        {/* Section header */}
+
+        {/* Section header — left-aligned, max-width keeps it readable */}
         <div className="max-w-2xl mb-10 sm:mb-16">
+          {/* Eyebrow label — uppercase + wide tracking = section tag convention */}
           <span className="text-teal-600 dark:text-teal-400 text-xs sm:text-sm font-semibold uppercase tracking-widest">
             Características
           </span>
@@ -95,6 +125,7 @@ export default function Features() {
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
+          // margin "-60px" = start animation 60px before section scrolls into view
           viewport={{ once: true, margin: "-60px" }}
         >
           {FEATURES.map((feature) => (
@@ -108,6 +139,18 @@ export default function Features() {
 
 // ── Sub-component ─────────────────────────────────────────────────────────────
 
+/**
+ * FeatureCard
+ *
+ * Individual feature card with:
+ *   - Accent-colored icon container (tinted bg + icon)
+ *   - Title, description, and a short tagline in accent color
+ *   - Hover: slight upward lift (-translate-y-1) + shadow
+ *
+ * `useAnimationVariants` is called here (not in the parent) so each card
+ * gets its own `staggerItem` variant reference — required for Framer Motion
+ * stagger to work correctly when variants are defined per-instance.
+ */
 function FeatureCard({ feature }: { feature: Feature }) {
   const { staggerItem } = useAnimationVariants();
   const Icon = feature.icon;
@@ -117,7 +160,7 @@ function FeatureCard({ feature }: { feature: Feature }) {
       variants={staggerItem}
       className={`group relative rounded-2xl border ${feature.border} ${feature.hoverBorder} p-6 lg:p-8 hover:shadow-lg dark:hover:shadow-slate-900/50 transition-all duration-300 hover:-translate-y-1 bg-white dark:bg-slate-900`}
     >
-      {/* Icon container */}
+      {/* Icon container — tinted circle, matches the feature's color family */}
       <div
         className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl ${feature.bg} flex items-center justify-center mb-5 sm:mb-6`}
         aria-hidden="true"
@@ -125,6 +168,7 @@ function FeatureCard({ feature }: { feature: Feature }) {
         <Icon size={20} className={feature.color} />
       </div>
 
+      {/* text-fluid-h3 = clamp(18px, 1vw+0.75rem, 22px) */}
       <h3 className="font-heading font-bold text-slate-900 dark:text-white text-fluid-h3 mb-2.5">
         {feature.title}
       </h3>
@@ -133,6 +177,7 @@ function FeatureCard({ feature }: { feature: Feature }) {
         {feature.description}
       </p>
 
+      {/* Short reinforcing tagline — accent color + small text draws the eye last */}
       <p className={`text-xs font-semibold ${feature.color}`}>
         {feature.detail}
       </p>
