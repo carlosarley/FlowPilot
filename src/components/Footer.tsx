@@ -91,12 +91,12 @@ export default function Footer() {
           <p className="text-xs text-slate-600">
             Built with Claude Web Builder by{" "}
             <a
-              href="https://tododeia.com"
+              href="https://Ryukcat.click"
               className="text-slate-500 hover:text-teal-400 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-teal-500"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Tododeia
+              Ryukcat.click
             </a>
           </p>
         </div>
